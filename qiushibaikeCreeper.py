@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def download_page(url):
-	headers = {"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"}
+	headers = {"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36"}
 	# 查看UserAgent：在Chrome地址栏输入：about:version,或者通过各浏览器自带的UserAgent修改功能查看当前浏览器UserAgent设置情况
 	r = requests.get(url, headers=headers) #增加headers，模拟浏览器
 	return r.text
