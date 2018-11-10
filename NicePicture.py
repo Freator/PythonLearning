@@ -38,7 +38,7 @@ def get_pic(link, text):
 	for i in pic_list:
 		pic_link = i.get('src') #拿到图片的具体 url
 		r = requests.get(pic_link, headers = headers) #下载图片之后，保存到文件
-		with open('pic/{}/{}'.format(text,link.split('/')[-1]),'wb') as f:
+		with open('pic/{}/{}'.format(text,pic_link.split('/')[-1]),'wb') as f:  #将link改成了pic_link
 			f.write(r.content)
 			time.sleep(1) #设置延时，减少网站压力，避免被封
 			
@@ -52,21 +52,21 @@ def execute(url):
 	
 def main():
 	create_dir('pic')
-	queue = [i for i in range(1,2)] #构造 url 链接页码
+	queue = [i for i in range(1,8)] #构造 url 链接页码
 	threads = []
 	while len(queue) > 0:
 		for thread in threads:
 			if not thread.is_alive():
 				threads.remove(thread)
-			while len(threads) < 2 and len(queue) > 0: #最大线程数设置为5
-				cur_page = queue.pop(0)
-				url = 'http://meizitu.com/a/more_{}.html'.format(cur_page)
-				thread = threading.Thread(target = execute,args = (url,))
-				thread.setDaemon(True)
+		while len(threads) < 5 and len(queue) > 0: #最大线程数设置为5(改了此循环的缩进)
+			cur_page = queue.pop(0)
+			url = 'http://meizitu.com/a/more_{}.html'.format(cur_page)
+			thread = threading.Thread(target = execute,args = (url,))
+			thread.setDaemon(True)
 				
-				thread.start()
-				print('{} is downloading the {}th page'.format(threading.current_thread().name,cur_page))
-				threads.append(thread)
+			thread.start()
+			print('{} is downloading the {}th page'.format(threading.current_thread().name,cur_page))
+			threads.append(thread)
 				
 if __name__ == '__main__':
 	main()
